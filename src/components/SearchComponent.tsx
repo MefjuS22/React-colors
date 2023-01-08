@@ -28,7 +28,8 @@ const SearchComponent = ({
       <Button
         onClick={handleSubmit}
         label="Submit"
-        className="p-button-help "
+        className="p-button-help"
+        disabled={inputId === null}
       ></Button>
     </div>
   );

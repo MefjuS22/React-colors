@@ -26,7 +26,7 @@ export const ModalComponent = ({
       header={header}
       onHide={onHide}
       visible={visible}
-      className="w-10 md:w-8 lg:w-6"
+      className="w-10 md:w-8 lg:w-6 xl:w-3"
       dismissableMask
     >
       <div className="flex flex-column gap-3 align-items-center">
@@ -58,5 +58,3 @@ export const ModalComponent = ({
     </Dialog>
   );
 };
-
-
