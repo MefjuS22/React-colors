@@ -4,10 +4,17 @@ import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
 import { ModalComponent } from "./components/ModalComponent";
 import { TableComponent } from "./components/TableComponent";
+import PaginatorComponent from "./components/PaginatorComponent";
 import { ProgressSpinner } from "primereact/progressspinner";
-
+import SearchComponent from "./components/SearchComponent";
 import { useFetchData } from "./hooks/useFetchData";
-
+interface rowData {
+  id: number;
+  name: string;
+  year: number;
+  color: string;
+  pantone_value: string;
+}
 function App() {
   const perPage = 5;
   const baseUrl = `https://reqres.in/api/products/`;
@@ -17,13 +24,12 @@ function App() {
   const [page, setPage] = useState<number>(1);
   const [pages, setPages] = useState<number[]>([]);
   const [displayModal, setDisplayModal] = useState<boolean>(false);
-  const [modalData, setModalData] = useState<null | any>(null);
+  const [modalData, setModalData] = useState<rowData>({} as rowData);
 
   const { data, error, loading } = useFetchData(url);
   const handleSubmit = () => {
     if (inputId !== 0 && inputId !== null) {
       setUrl(`${baseUrl}${inputId}`);
-      console.log(url);
       setInputId(null);
     } else {
       setUrl(`${baseUrlWithPage}`);
@@ -50,17 +56,22 @@ function App() {
   const onHide = () => {
     setDisplayModal(false);
   };
-  const handleRowClick = (rowData: any) => {
+  const handleRowClick = (rowData: rowData) => {
     setModalData(rowData);
     setDisplayModal(true);
   };
   const isPageActive = (num: number) => {
     return num === page;
   };
+  const isLastPageActive = () => {
+    return page === data?.total_pages;
+  };
   const paginator = () => {
     const pageArr = [];
-    for (let i = 1; i <= data?.total_pages; i++) {
-      pageArr.push(i);
+    if (data?.total_pages !== undefined) {
+      for (let i = 1; i <= data?.total_pages; i++) {
+        pageArr.push(i);
+      }
     }
     return pageArr;
   };
@@ -73,22 +84,12 @@ function App() {
       <div className="flex min-h-screen flex-column align-items-center justify-content-center">
         <main className="body-container w-screen flex flex-column align-items-center justify-content-center flex-1">
           <div className="flex flex-column align-items-center gap-2 ">
-            <div className="flex flex-column sm:flex-row w-full gap-2 p-2 flex-wrap">
-              <Button
-                onClick={fetchBasic}
-                label="Restore"
-                className="p-button-danger"
-              ></Button>
-              <InputNumber
-                onValueChange={(e) => setInputId(e.value)}
-                value={inputId}
-              ></InputNumber>
-              <Button
-                onClick={handleSubmit}
-                label="Submit"
-                className="p-button-help "
-              ></Button>
-            </div>
+            <SearchComponent
+              fetchBasic={fetchBasic}
+              setInputId={setInputId}
+              inputId={inputId}
+              handleSubmit={handleSubmit}
+            />
           </div>
           <h1>Products</h1>
           {loading ? (
@@ -106,40 +107,15 @@ function App() {
                   handleRowClick={handleRowClick}
                 ></TableComponent>
               </div>
-              <div className="w-9 flex justify-content-between">
-                <Button
-                  icon="pi pi-arrow-left"
-                  className="p-button-help"
-                  onClick={handlePrevPage}
-                  disabled={page === 1}
-                ></Button>
-                <div className="flex flex-row gap-2">
-                  {pages.length === 0 ? (
-                    <div className="bg-indigo-900 font-bold border-round-md w-3rem h-3rem flex align-items-center justify-content-center text-3xl">
-                      1
-                    </div>
-                  ) : (
-                    pages.map((num) => (
-                      <div
-                        key={num}
-                        className={`
-                    ${isPageActive(num) ? "bg-indigo-900 font-bold" : ""}
-                    border-round-md w-3rem h-3rem flex align-items-center justify-content-center text-3xl`}
-                        onClick={() => goToPage(num)}
-                      >
-                        {num}
-                      </div>
-                    ))
-                  )}
-                </div>
-
-                <Button
-                  icon="pi pi-arrow-right"
-                  className="p-button-info"
-                  onClick={handleNextPage}
-                  disabled={page === data?.total_pages || pages.length === 0}
-                ></Button>
-              </div>
+              <PaginatorComponent
+                isLastPageActive={isLastPageActive}
+                page={page}
+                pages={pages}
+                isPageActive={isPageActive}
+                goToPage={goToPage}
+                handleNextPage={handleNextPage}
+                handlePrevPage={handlePrevPage}
+              ></PaginatorComponent>
               <ModalComponent
                 visible={displayModal}
                 onHide={onHide}

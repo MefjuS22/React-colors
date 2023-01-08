@@ -1,24 +1,14 @@
 import styled from "styled-components";
-
-type Product = {
-  id: number;
-  name: string;
-  year: number;
-  color: string;
-  pantone_value: string;
-};
-
-type ProductsResponse = {
-  page: number;
-  per_page: number;
-  total: number;
-  total_pages: number;
-  data: Product[];
-};
-
+import { Products } from "../hooks/useFetchData";
 interface TableComponentProps {
-  tableData: any;
-  handleRowClick: (rowData: object) => void;
+  tableData: Products | null;
+  handleRowClick: (rowData: {
+    id: number;
+    name: string;
+    year: number;
+    color: string;
+    pantone_value: string;
+  }) => void;
 }
 
 const Table = styled.table`
@@ -76,8 +66,6 @@ export const TableComponent = ({
   tableData,
   handleRowClick,
 }: TableComponentProps) => {
-  const isArray = Array.isArray(tableData?.data);
-
   return (
     <>
       <Table className="w-full ">
@@ -89,28 +77,17 @@ export const TableComponent = ({
           </tr>
         </thead>
         <tbody>
-          {isArray ? (
-            tableData?.data.map((item: any) => (
-              <tr
-                key={item.id}
-                style={{ backgroundColor: item.color }}
-                onClick={() => handleRowClick(item)}
-              >
-                <td>{item.id}</td>
-                <td>{item.name}</td>
-                <td>{item.year}</td>
-              </tr>
-            ))
-          ) : (
+          {tableData?.data.map((item) => (
             <tr
-              style={{ backgroundColor: tableData?.data?.color }}
-              onClick={() => handleRowClick(tableData.data)}
+              key={item.id}
+              style={{ backgroundColor: item.color }}
+              onClick={() => handleRowClick(item)}
             >
-              <td>{tableData?.data?.id}</td>
-              <td>{tableData?.data?.name}</td>
-              <td>{tableData?.data?.year}</td>
+              <td>{item.id}</td>
+              <td>{item.name}</td>
+              <td>{item.year}</td>
             </tr>
-          )}
+          ))}
         </tbody>
       </Table>
     </>

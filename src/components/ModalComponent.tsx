@@ -4,6 +4,7 @@ interface ModalComponentProps {
   visible: boolean;
   onHide: () => void;
   modalData: {
+    id: number;
     name: string;
     year: number;
     color: string;
@@ -58,4 +59,4 @@ export const ModalComponent = ({
   );
 };
 
-export default ModalComponent;
+
