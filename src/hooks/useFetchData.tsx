@@ -8,13 +8,16 @@ export const useFetchData = (url: string) => {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     fetchData(url)
       .then((data) => {
         setData(data);
         setLoading(false);
+        if (typeof data === "string") {
+          setError(data);
+        }
       })
       .catch((error) => {
-        console.log(error);
         setError(error);
         setLoading(false);
       });

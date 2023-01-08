@@ -3,7 +3,12 @@ import { Dialog } from "primereact/dialog";
 interface ModalComponentProps {
   visible: boolean;
   onHide: () => void;
-  modalData: any;
+  modalData: {
+    name: string;
+    year: number;
+    color: string;
+    pantone_value: string;
+  };
 }
 
 export const ModalComponent = ({
@@ -20,34 +25,33 @@ export const ModalComponent = ({
       header={header}
       onHide={onHide}
       visible={visible}
-      breakpoints={{ "960px": "75vw", "640px": "100vw" }}
-      style={{ width: "50vw" }}
+      className="w-10 md:w-8 lg:w-6"
       dismissableMask
     >
       <div className="flex flex-column gap-3 align-items-center">
         <div
-          className="p-2 bg-gray-900 w-3 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
+          className="p-2 bg-gray-900 w-full sm:w-6 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
           style={{ borderColor: `${modalData?.color}` }}
         >
-          {modalData?.name}
+          Nake: {modalData?.name}
         </div>
         <div
-          className="p-2 bg-gray-900 w-3 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
+          className="p-2 bg-gray-900 w-full sm:w-6 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
           style={{ borderColor: `${modalData?.color}` }}
         >
-          {modalData?.year}
+          Year: {modalData?.year}
         </div>
         <div
-          className="p-2 bg-gray-900 w-3 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
+          className="p-2 bg-gray-900 w-full sm:w-6 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
           style={{ borderColor: `${modalData?.color}` }}
         >
-          {modalData?.color}
+          Color: {modalData?.color}
         </div>
         <div
-          className="p-2 bg-gray-900 w-3 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
+          className="p-2 bg-gray-900 w-full sm:w-6 text-lg flex justify-content-center align-items-center h-3rem border-round-lg shadow-1 border-top-3"
           style={{ borderColor: `${modalData?.color}` }}
         >
-          {modalData?.pantone_value}
+          Pantone value: {modalData?.pantone_value}
         </div>
       </div>
     </Dialog>

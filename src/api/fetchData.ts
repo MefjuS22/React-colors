@@ -3,7 +3,7 @@ export const fetchData = async (url: string) => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      const errorCode = new Error(response.status.toLocaleString());
+      const errorCode = response.status.toLocaleString();
       return errorCode;
     } else {
       const data = await response.json();
