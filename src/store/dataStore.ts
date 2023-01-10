@@ -8,7 +8,7 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     data: null as Products | null,
-    url: baseUrlWithPage,
+    url: baseUrlWithPage as string,
   },
   reducers: {
     changeData: (state, action) => {

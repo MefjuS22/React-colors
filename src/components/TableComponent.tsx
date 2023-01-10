@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Products } from "../hooks/useFetchData";
-import { useSelector, useDispatch } from "react-redux";
 import { setModalData, toggleModal } from "../store/modalStore";
+import { useAppDispatch, useAppSelector } from "../store/store";
 interface TableComponentTypes {
   tableData: Products | null;
   rowData: {
@@ -65,8 +65,8 @@ const Table = styled.table`
 `;
 
 export const TableComponent = () => {
-  const storeData = useSelector((state: any) => state.data.data);
-  const dispatch = useDispatch();
+  const storeData = useAppSelector((state) => state.data.data);
+  const dispatch = useAppDispatch();
   const handleRowClick = (item: TableComponentTypes["rowData"]) => {
     dispatch(setModalData(item));
     dispatch(toggleModal());

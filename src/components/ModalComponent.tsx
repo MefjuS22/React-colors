@@ -1,25 +1,17 @@
 import { Dialog } from "primereact/dialog";
 import { toggleModal } from "../store/modalStore";
-import { useSelector, useDispatch } from "react-redux";
-
-interface ModalComponentProps {
-  visible: boolean;
-  onHide: () => void;
-  modalData: {
-    id: number;
-    name: string;
-    year: number;
-    color: string;
-    pantone_value: string;
-  };
-}
+import { useAppDispatch, useAppSelector } from "../store/store";
 
 export const ModalComponent = () => {
-  const dispatch = useDispatch();
-  const modalData = useSelector((state: any) => state.modal.modalData);
-  const isOpen = useSelector((state: any) => state.modal.isOpen);
+  const dispatch = useAppDispatch();
+  const modalData = useAppSelector((state) => state.modal.data);
+  const isOpen = useAppSelector((state) => state.modal.isOpen);
   const header = () => {
-    return modalData?.name[0].toUpperCase() + modalData?.name.slice(1);
+    if (modalData?.name) {
+      return modalData?.name[0].toUpperCase() + modalData?.name.slice(1);
+    } else {
+      return "Error";
+    }
   };
   const onHide = () => {
     dispatch(toggleModal());

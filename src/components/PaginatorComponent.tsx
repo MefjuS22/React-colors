@@ -1,17 +1,21 @@
 import { Button } from "primereact/button";
-import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { setUrlPage } from "../store/dataStore";
+import { useAppSelector, useAppDispatch } from "../store/store";
 
 const PaginatorComponent = () => {
-  const storeData = useSelector((state: any) => state.data.data);
-  const dispatch = useDispatch();
+  const storeData = useAppSelector((state) => state.data.data);
+  const dispatch = useAppDispatch();
   const [pages, setPages] = useState<number[]>([]);
   const handleNextPage = () => {
-    dispatch(setUrlPage(storeData?.page + 1));
+    if (storeData?.page) {
+      dispatch(setUrlPage(storeData?.page + 1));
+    } else return;
   };
   const handlePrevPage = () => {
-    dispatch(setUrlPage(storeData?.page - 1));
+    if (storeData?.page) {
+      dispatch(setUrlPage(storeData?.page - 1));
+    } else return;
   };
   const goToPage = (num: number) => {
     dispatch(setUrlPage(num));

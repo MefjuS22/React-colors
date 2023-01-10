@@ -1,20 +1,17 @@
 import { useEffect } from "react";
 import "./App.css";
-import { Products } from "./hooks/useFetchData";
-
+import SearchComponent from "./components/SearchComponent";
+import PaginatorComponent from "./components/PaginatorComponent";
 import { ModalComponent } from "./components/ModalComponent";
 import { TableComponent } from "./components/TableComponent";
-import PaginatorComponent from "./components/PaginatorComponent";
 import { ProgressSpinner } from "primereact/progressspinner";
-import SearchComponent from "./components/SearchComponent";
 import { useFetchData } from "./hooks/useFetchData";
-import { useSelector, useDispatch } from "react-redux";
 import { changeData } from "./store/dataStore";
+import { useAppDispatch, useAppSelector } from "./store/store";
 function App() {
-  const storeData = useSelector((state) => state.data.data as Products['data']);
-  const storeUrl = useSelector((state) => state.data.url);
-  const dispatch = useDispatch();
-  const { data, error, loading } = useFetchData(storeUrl);
+  const storeUrl = useAppSelector((state) => state.data.url);
+  const dispatch = useAppDispatch();
+  const { data, error, loading } = useFetchData(storeUrl as string);
 
   useEffect(() => {
     dispatch(changeData(data));
