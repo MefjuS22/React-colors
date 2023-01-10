@@ -1,14 +1,16 @@
 import styled from "styled-components";
 import { Products } from "../hooks/useFetchData";
-interface TableComponentProps {
+import { useSelector, useDispatch } from "react-redux";
+import { setModalData, toggleModal } from "../store/modalStore";
+interface TableComponentTypes {
   tableData: Products | null;
-  handleRowClick: (rowData: {
+  rowData: {
     id: number;
     name: string;
     year: number;
     color: string;
     pantone_value: string;
-  }) => void;
+  };
 }
 
 const Table = styled.table`
@@ -62,10 +64,13 @@ const Table = styled.table`
   }
 `;
 
-export const TableComponent = ({
-  tableData,
-  handleRowClick,
-}: TableComponentProps) => {
+export const TableComponent = () => {
+  const storeData = useSelector((state: any) => state.data.data);
+  const dispatch = useDispatch();
+  const handleRowClick = (item: TableComponentTypes["rowData"]) => {
+    dispatch(setModalData(item));
+    dispatch(toggleModal());
+  };
   return (
     <>
       <Table className="w-full ">
@@ -77,7 +82,7 @@ export const TableComponent = ({
           </tr>
         </thead>
         <tbody>
-          {tableData?.data.map((item) => (
+          {storeData?.data.map((item: TableComponentTypes['rowData']) => (
             <tr
               key={item.id}
               style={{ backgroundColor: item.color }}

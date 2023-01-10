@@ -1,4 +1,6 @@
 import { Dialog } from "primereact/dialog";
+import { toggleModal } from "../store/modalStore";
+import { useSelector, useDispatch } from "react-redux";
 
 interface ModalComponentProps {
   visible: boolean;
@@ -12,20 +14,22 @@ interface ModalComponentProps {
   };
 }
 
-export const ModalComponent = ({
-  visible,
-  onHide,
-  modalData,
-}: ModalComponentProps) => {
+export const ModalComponent = () => {
+  const dispatch = useDispatch();
+  const modalData = useSelector((state: any) => state.modal.modalData);
+  const isOpen = useSelector((state: any) => state.modal.isOpen);
   const header = () => {
     return modalData?.name[0].toUpperCase() + modalData?.name.slice(1);
+  };
+  const onHide = () => {
+    dispatch(toggleModal());
   };
 
   return (
     <Dialog
       header={header}
       onHide={onHide}
-      visible={visible}
+      visible={isOpen}
       className="w-10 md:w-8 lg:w-6 xl:w-3"
       dismissableMask
     >

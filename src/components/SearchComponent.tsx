@@ -1,5 +1,8 @@
 import { Button } from "primereact/button";
 import { InputNumber } from "primereact/inputnumber";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { setUrlToDefault, setUrlToInput } from "../store/dataStore";
 
 interface SearchComponentProps {
   fetchBasic: () => void;
@@ -8,28 +11,35 @@ interface SearchComponentProps {
   handleSubmit: () => void;
 }
 
-const SearchComponent = ({
-  fetchBasic,
-  setInputId,
-  inputId,
-  handleSubmit,
-}: SearchComponentProps) => {
+const SearchComponent = () => {
+  const [input, setInput] = useState<null | number>(null);
+  const storeData = useSelector((state: any) => state.data.data);
+  const dispatch = useDispatch();
+  const submitId = () => {
+    if (input !== 0 && input !== null) {
+      dispatch(setUrlToInput(input));
+      setInput(null);
+    } else {
+      dispatch(setUrlToDefault());
+      setInput(null);
+    }
+  };
   return (
     <div className="flex flex-column sm:flex-row w-full gap-2 p-2 flex-wrap">
       <Button
-        onClick={fetchBasic}
+        onClick={() => dispatch(setUrlToDefault())}
         label="Restore"
         className="p-button-danger"
       ></Button>
       <InputNumber
-        onValueChange={(e) => setInputId(e.value)}
-        value={inputId}
+        onValueChange={(e) => setInput(e.value)}
+        value={input}
       ></InputNumber>
       <Button
-        onClick={handleSubmit}
+        onClick={submitId}
         label="Submit"
         className="p-button-help"
-        disabled={inputId === null}
+        disabled={input === null}
       ></Button>
     </div>
   );
